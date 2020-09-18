@@ -1,0 +1,36 @@
+
+<aw-wizard>
+  <aw-wizard-step
+    stepTitle="Title of step 1"
+    [navigationSymbol]="{ symbol: '' }"
+    [canExit]="stepExit.bind(this)"
+  >
+    <hello name="Step 1"></hello>
+    <button type="button" awNextStep>Next Step</button>
+    <button type="button" [awGoToStep]="{stepIndex: 2}">Go directly to third Step</button>
+  </aw-wizard-step>
+  <aw-wizard-step stepTitle="Title of step 2">
+    <hello name="Step 2"></hello>
+    <button type="button" awPreviousStep>Go to previous step</button>
+    <button type="button" awNextStep>Go to next step</button>
+  </aw-wizard-step>
+  <aw-wizard-step stepTitle="Title of step 3">
+    <hello name="Step 3"></hello>
+    <button type="button" awPreviousStep>Previous Step</button>
+    <button type="button" awNextStep (click)="onFinished()">Finish</button>
+  </aw-wizard-step>
+  <aw-wizard-step stepTitle="Title of step 4">
+    <hello name="Finished"></hello>
+    <div *ngFor="let stepSaving of stepSaving$; let i = index;">
+      Step {{ i + 1 }}: 
+
+      <ng-container *ngIf="(stepSaving | async).state !== 'saving'; else saving">
+        {{ (stepSaving | async).value }}
+      </ng-container>
+      <ng-template #saving>
+        <img 
+          width="20px" height="20px" src="https://loading.io/spinners/rolling/lg.curve-bars-loading-indicator.gif"/>
+      </ng-template>
+    </div>
+  </aw-wizard-step>
+</aw-wizard>
